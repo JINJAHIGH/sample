@@ -1,6 +1,18 @@
-Sub Quick2003Bypass()
-    ' Word 2003 では Documents.Open の引数に特定の組み合わせを使うと保護が無視される
-    Dim d As Document
-    Set d = Documents.Open("C:\path\to\file.dot", , , , "dummy", , , , , , True)
-    Application.VBE.MainWindow.Visible = True
+Sub RecoverFromProtectedDot()
+    Dim protectedFile As String
+    protectedFile = "C:\OldFiles\template.dot"
+    
+    ' 保護されたファイルから Normal.dot へ強制コピー
+    Application.OrganizerCopy _
+        Source:=protectedFile, _
+        Destination:=NormalTemplate.FullName, _
+        Name:="*", _
+        Object:=wdOrganizerObjectProjectItems
+    
+    ' Normal.dot を保存
+    NormalTemplate.Save
+    
+    ' これで Normal.dot からマクロをエクスポートできる
+    MsgBox "マクロを Normal.dot にコピーしました。" & vbCrLf & _
+           "VBAエディタで確認してください。", vbInformation
 End Sub
